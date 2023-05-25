@@ -47,6 +47,7 @@ public class ValidationItemControllerV4 {
 
     @PostMapping("/add")
     public String addItem(@Validated @ModelAttribute("item") ItemSaveForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    //Item 대신 ItemSaveForm을 전달받음 ModelAttribute에 꼭 item 넣어주어야함, @Validated 로 검증 수행 하고 , bindingResult로 검증결과도 받음.
 
         //특정 필드가 아닌 복합 룰 검증
         if (form.getPrice() != null && form.getQuantity() != null) {
@@ -67,6 +68,7 @@ public class ValidationItemControllerV4 {
         item.setItemName(form.getItemName());
         item.setPrice(form.getPrice());
         item.setQuantity(form.getQuantity());
+        //수정된폼을 받아야하므로 아이템을 새로 생성해주어야함
 
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
@@ -101,6 +103,7 @@ public class ValidationItemControllerV4 {
         itemParam.setItemName(form.getItemName());
         itemParam.setPrice(form.getPrice());
         itemParam.setQuantity(form.getQuantity());
+        //업데이트(수정을) 가능하게끔 새로 만들어줌
 
         itemRepository.update(itemId, itemParam);
         return "redirect:/validation/v4/items/{itemId}";
